@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th ="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список людей</title>
+</head>
+<body>
+<h1>All Person</h1>
+<table border="1">
+    <tbody>
+    <tr>
+        <td>Логин</td>
+        <td>Пароль</td>
+        <td>Имя</td>
+        <td>Фамилие</td>
+        <td>E-mail</td>
+        <td>Список Ролей</td>
+        <td>Update</td>
+        <td>Delete</td>
+
+    </tr>
+    <tr th:each="person : ${people}">
+        <td th:text = "${person.getUsername()}">Name</td>
+        <td th:text = "${person.getPassword()}">Password</td>
+        <td th:text = "${person.getName()}">Имя</td>
+        <td th:text = "${person.getSurname()}">Фамилие</td>
+        <td th:text = "${person.getEmail()}">Е-mail</td>
+        <td th:text = "${person.getRolesToString()}">Список ролей</td>
+        <td><a th:href="@{/admin/edit/{id}(id=${person.getId()})}">Update</a></td>
+        <td><form th:method="DELETE" th:action="@{/admin/{id}(id=${person.getId()})}">
+            <input type="submit" value="Delete"/>
+        </form></td>
+    </tr>
+    </tbody>
+</table>
+<a href="/admin/new-person">Create new Person</a>
+<br>
+<br>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Выход"/>
+</form>
+</body>
+</html>

@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.beljankin.scurityboot.entities.User;
-import ru.beljankin.scurityboot.services.UserService;
+import ru.beljankin.scurityboot.services.UserServiceImplDS;
 
 import java.security.Principal;
 
 @RestController
 public class MainController {
-    private UserService userService;
+    private UserServiceImplDS userService;
 
     @Autowired
-    public void setUserService(UserService userService){
+    public void setUserService(UserServiceImplDS userService){
         this.userService = userService;
     }
 

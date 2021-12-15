@@ -1,16 +1,18 @@
-use spring_boot;
+use spring_boot_311;
 CREATE TABLE `users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `username` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `surname` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`));
-  
+
   CREATE TABLE `roles` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)) ;
-  
+
 CREATE TABLE `users_roles` (
   `user_id` bigint NOT NULL,
   `role_id` bigint NOT NULL,
@@ -20,10 +22,33 @@ CREATE TABLE `users_roles` (
 ) ;
 insert into `roles` (`name`)
 values
-('ROLE_USER'), ('ROLE_ADMIN'); 
+('ROLE_USER'), ('ROLE_ADMIN'), ('ROLE_MANAGER');
 
-insert into `users` (`username`, `password`, `email`)
+
+insert into `users` (`username`, `password`, `name`, `surname`,`email`)
 values
-('user', '$2a$10$IB8qPy3wa4rkfIwf/hWll.Rr8VabWvpd8ZnKt3wPdz91EjrPGt9qy', 'info@yandex.ru');
+('user', '$2a$10$IB8qPy3wa4rkfIwf/hWll.Rr8VabWvpd8ZnKt3wPdz91EjrPGt9qy', 'user', 'user','info@yandex.ru');
+
+insert into `users` (`username`, `password`, `name`, `surname`,`email`)
+values
+('petr', '$2a$10$IB8qPy3wa4rkfIwf/hWll.Rr8VabWvpd8ZnKt3wPdz91EjrPGt9qy', 'Петр', 'Иванов','petr@yandex.ru');
+
+insert into `users` (`username`, `password`, `name`, `surname`,`email`)
+values
+('ivan', '$2a$10$IB8qPy3wa4rkfIwf/hWll.Rr8VabWvpd8ZnKt3wPdz91EjrPGt9qy', 'Иван', 'Петров','ivan@yandex.ru');
+
+
+insert into `users` (`username`, `password`, `name`, `surname`,`email`)
+values
+('semen', '$2a$10$IB8qPy3wa4rkfIwf/hWll.Rr8VabWvpd8ZnKt3wPdz91EjrPGt9qy', 'Семен', 'Сидоров','semen@yandex.ru');
+
 
 insert into `users_roles` (`user_id`, `role_id`) values (1, 2);
+
+insert into `users_roles` (`user_id`, `role_id`) values (2, 2);
+insert into `users_roles` (`user_id`, `role_id`) values (2, 3);
+insert into `users_roles` (`user_id`, `role_id`) values (3, 1);
+insert into `users_roles` (`user_id`, `role_id`) values (4, 3);
+
+
+
