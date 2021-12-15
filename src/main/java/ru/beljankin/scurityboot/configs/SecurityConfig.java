@@ -8,11 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.beljankin.scurityboot.services.UserServiceImplDS;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserServiceImplDS userService;
+
+    //////////////////////
 
     @Autowired
     public void setUserService(UserServiceImplDS userService){
@@ -22,6 +25,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http.formLogin() // форма логирования по умолчанию
+                .successHandler(loginSuccessHandler) // раскидываем по страницам в зависимости от ролей
+                .permitAll();
+
+        http.logout()
+                .permitAll()
+                // URL логаута
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                // указываем URL при удачном логауте
+                .logoutSuccessUrl("/logoutsucsess")
+                //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
+                .and().csrf().disable();
+
+        http
+                // делаем страницу регистрации недоступной для авторизированных пользователей
+                .authorizeRequests()
+                //страницы аутентификаци доступна всем
+                .antMatchers("/login").anonymous()
+                .antMatchers("/user/**").access("hasAnyRole('USER', 'ADMIN')")
+                // защищенные URL
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
+
+        /*
         http.authorizeRequests()
                 .antMatchers("/authenticated/**").authenticated()
                 .antMatchers("/only_for_admins/**").hasRole("ADMIN")
@@ -31,6 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessUrl("/");
     }
+
+         */
 
     // InMemory *
 //    @Bean
